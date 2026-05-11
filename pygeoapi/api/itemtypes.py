@@ -84,7 +84,10 @@ CONFORMANCE_CLASSES_FEATURES = [
     'http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/queryables-query-parameters',  # noqa
     'http://www.opengis.net/spec/ogcapi-features-4/1.0/conf/create-replace-delete',  # noqa
     'http://www.opengis.net/spec/ogcapi-features-5/1.0/conf/schemas',
-    'http://www.opengis.net/spec/ogcapi-features-5/1.0/conf/core-roles-features'  # noqa
+    'http://www.opengis.net/spec/ogcapi-features-5/1.0/conf/core-roles-features',  # noqa
+    'http://www.opengis.net/spec/cql2/1.0/conf/cql2-text',
+    'http://www.opengis.net/spec/cql2/1.0/conf/basic-cql2'
+
 ]
 
 CONFORMANCE_CLASSES_RECORDS = [
@@ -522,8 +525,8 @@ def get_collection_items(
 
     LOGGER.debug('Processing filter-lang parameter')
     filter_lang = request.params.get('filter-lang')
-    # Currently only cql-text is handled, but it is optional
-    if filter_lang not in [None, 'cql-json', 'cql-text']:
+    filter_langs = [None, 'cql-json', 'cql-text', 'cql2-text', 'cql2-json']
+    if filter_lang not in filter_langs:
         msg = 'Invalid filter language'
         return api.get_exception(
             HTTPStatus.BAD_REQUEST, headers, request.format,
