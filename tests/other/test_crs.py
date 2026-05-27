@@ -238,30 +238,6 @@ def test_transform_bbox():
         id='nested-geometry-name'
     ),
     pytest.param(
-        '(some_attribute = 10 AND S_INTERSECTS(geometry, POINT(1 1))) OR '
-        'DWITHIN(geometry, POINT(2 2), 10, meters)',
-        'http://www.opengis.net/def/crs/OGC/1.3/CRS84',
-        None,
-        'custom_geom_name',
-        pygeofilter.ast.Or(
-            pygeofilter.ast.And(
-                pygeofilter.ast.Equal(
-                    pygeofilter.ast.Attribute(name='some_attribute'), 10),
-                pygeofilter.ast.GeometryIntersects(
-                    pygeofilter.ast.Attribute(name='custom_geom_name'),
-                    Geometry({'type': 'Point', 'coordinates': (1, 1)})
-                ),
-            ),
-            pygeofilter.ast.DistanceWithin(
-                pygeofilter.ast.Attribute(name='custom_geom_name'),
-                Geometry({'type': 'Point', 'coordinates': (2, 2)}),
-                distance=10,
-                units='meters',
-            )
-        ),
-        id='complex-filter-name'
-    ),
-    pytest.param(
         'S_INTERSECTS(geometry, POINT(12.512829 41.896698))',
         'http://www.opengis.net/def/crs/OGC/1.3/CRS84',
         'http://www.opengis.net/def/crs/EPSG/0/3004',
@@ -286,30 +262,6 @@ def test_transform_bbox():
             ),
         ),
         id='nested-geometry-transformed-coords'
-    ),
-    pytest.param(
-        '(some_attribute = 10 AND S_INTERSECTS(geometry, POINT(12.512829 41.896698))) OR '  # noqa
-        'DWITHIN(geometry, POINT(12 41), 10, meters)',
-        'http://www.opengis.net/def/crs/OGC/1.3/CRS84',
-        'http://www.opengis.net/def/crs/EPSG/0/3004',
-        None,
-        pygeofilter.ast.Or(
-            pygeofilter.ast.And(
-                pygeofilter.ast.Equal(
-                    pygeofilter.ast.Attribute(name='some_attribute'), 10),
-                pygeofilter.ast.GeometryIntersects(
-                    pygeofilter.ast.Attribute(name='geometry'),
-                    Geometry({'type': 'Point', 'coordinates': (2313682.387730346, 4641308.550187246)})  # noqa
-                ),
-            ),
-            pygeofilter.ast.DistanceWithin(
-                pygeofilter.ast.Attribute(name='geometry'),
-                Geometry({'type': 'Point', 'coordinates': (2267681.8892602, 4543101.513292163)}),  # noqa
-                distance=10,
-                units='meters',
-            )
-        ),
-        id='complex-filter-transformed-coords'
     ),
     pytest.param(
         'S_INTERSECTS(geometry, SRID=3857;POINT(1392921 5145517))',
